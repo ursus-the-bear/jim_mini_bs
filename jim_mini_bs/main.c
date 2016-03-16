@@ -2,9 +2,6 @@
 #include <stdlib.h>
 
 /* Kleines BS in c*/
-
-
-
 struct _task;
 
 typedef struct _events{
@@ -26,14 +23,16 @@ typedef struct _task {
 Task_T * aktTask;
 
 void Task1Func(int id){
-    printf("Task nr .%i laeuft ");
+    printf("Task nr %i laeuft\n", id);
 }
 
 void pollTask(struct _task* self){
-    printf("Task id %s called Poll", self->taskId);
+    printf("Task id %i called Poll\n", self->taskId);
 }
 
 void taskEvent(int eventId){
+    
+    printf ("in Eventhandler. TaskID: %i\n", eventId);
     
 }
 
@@ -74,7 +73,7 @@ void EventMelden(){
     if(gevent.zuTaskId != 0){
         gevent.backUpTask = aktTask; /*sichern vom Aktellen Task*/
         
-        while(aktTask.taskId != gevent.zuTaskId ){
+        while(aktTask->taskId != gevent.zuTaskId ){
             aktTask = aktTask->nextTask;
         }
         
@@ -100,6 +99,9 @@ int main(){
             aktTask->processEvent(1);
         }
         aktTask->poll(aktTask);
+        
+        // wechseln zum nächsten task
+        aktTask = aktTask->nextTask;
     }
     
     
